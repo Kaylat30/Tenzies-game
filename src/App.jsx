@@ -7,6 +7,8 @@ export default function App()
     const [dice,setDice] = useState(allnewDice())
     const [tenzies, setTenzies] = useState(false)
     const [rollCount, setRollCount] = useState(0);
+    const [startTime, setStartTime] = useState(null);
+    const [endTime, setEndTime] = useState(null);
 
     useEffect(() => {
         const firstValue = dice[0].value
@@ -14,6 +16,7 @@ export default function App()
         const allSameNumber = dice.every(die => die.value === firstValue)
         if(allHeld && allSameNumber) {
             setTenzies(true)
+            setEndTime(Date.now());
         }
     },[dice])
 
@@ -39,6 +42,10 @@ export default function App()
     {
         if(!tenzies)
         {
+            if (rollCount === 0) {
+                setStartTime(Date.now());
+              }
+
             setDice(oldDice => oldDice.map(die =>
                 {
                     return die.isHeld ? die : generatenewDie()
@@ -50,6 +57,8 @@ export default function App()
             setDice(allnewDice())
             setTenzies(false)
             setRollCount(1)
+            setStartTime(null);
+            setEndTime(null);
         }
     }
     function holdDice(id)
@@ -61,6 +70,15 @@ export default function App()
         })
         ))
     }
+
+    const calculateTimeToWin = () => {
+        if (startTime && endTime) {
+          const timeInSeconds = Math.floor((endTime - startTime) / 1000);
+          const minutes = Math.floor(timeInSeconds / 60);
+          const seconds = timeInSeconds % 60;
+          return `${minutes} minutes and ${seconds} seconds`;
+        }
+      };
 
     const diceElements = dice.map((die)=>
     (
@@ -79,7 +97,8 @@ export default function App()
             <div className="die-container">
                 {diceElements}
             </div> 
-            {tenzies ? <h5>Total number of rolls: {rollCount}</h5> : ""}       
+            {tenzies ? <h5>Total number of rolls: {rollCount}</h5> : ""}
+            {tenzies ? <h5>Time taken to win: {calculateTimeToWin()}</h5> : ""}       
             <button className="roll-dice" onClick={rollDice}>
                 {tenzies ? "Reset Game" : "Roll"}
             </button>
