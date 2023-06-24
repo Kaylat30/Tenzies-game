@@ -6,6 +6,7 @@ export default function App()
 {
     const [dice,setDice] = useState(allnewDice())
     const [tenzies, setTenzies] = useState(false)
+    const [rollCount, setRollCount] = useState(0);
 
     useEffect(() => {
         const firstValue = dice[0].value
@@ -42,11 +43,13 @@ export default function App()
                 {
                     return die.isHeld ? die : generatenewDie()
                 }))
+                setRollCount(prevCount => prevCount+1)
         }
         else
         {
             setDice(allnewDice())
             setTenzies(false)
+            setRollCount(1)
         }
     }
     function holdDice(id)
@@ -75,7 +78,8 @@ export default function App()
             <p>Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
             <div className="die-container">
                 {diceElements}
-            </div>        
+            </div> 
+            {tenzies ? <h5>Total number of rolls: {rollCount}</h5> : ""}       
             <button className="roll-dice" onClick={rollDice}>
                 {tenzies ? "Reset Game" : "Roll"}
             </button>
