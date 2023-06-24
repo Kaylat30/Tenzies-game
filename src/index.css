@@ -43,20 +43,23 @@ p {
 }
 
 .die-face {
-    grid-row: span 1;
+    /* grid-row: span 1; */
     border-radius: 10px;
     height: 50px;
     width: 50px;
-    display: flex;
+    /* display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: center; */
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
     cursor: pointer;
     box-shadow: 0px 3.57447px 3.57447px rgba(0, 0, 0, 0.1);
 }
 
 .die-num {
     font-size: 2em;
-    font-weight: lighter;
+    font-weight: bold;
+    margin-top: -20px;
 }
 
 .roll-dice {
@@ -77,4 +80,8 @@ p {
 
 .roll-dice:focus {
     outline: none;
+}
+.dot
+{
+
 }
